@@ -32,12 +32,8 @@
 }
 
 .modal-header {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  justify-content: flex-end;
 }
 
 .modal-close-button {
@@ -63,8 +59,3 @@ button {
   background: #247ba0;
   color: #fff;
 }
-
-body {
-  color: #c6538c;
-}
-/*# sourceMappingURL=styles.css.map */
