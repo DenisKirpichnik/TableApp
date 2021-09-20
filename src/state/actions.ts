@@ -6,6 +6,11 @@ export const addNewProduct = (payload: Product) => ({
   payload,
 })
 
+export const editProduct = (payload: Product) => ({
+  type: actionTypes.EDIT_PRODUCT,
+  payload,
+})
+
 export const deleteProduct = (payload: number) => ({
   type: actionTypes.DELETE_PRODUCT,
   payload,
@@ -18,5 +23,10 @@ export const sortProducts = (parameter: string, isAscending: boolean) => ({
 
 export const setCurrentProduct = (payload: number | null) => ({
   type: actionTypes.SET_CURRENT_PRODUCT,
+  payload,
+})
+
+export const searchProduct = (payload: string) => ({
+  type: actionTypes.SEARCH_PRODUCT,
   payload,
 })

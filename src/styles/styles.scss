@@ -1,7 +1,4 @@
+@import 'config';
+@import 'table';
+@import 'modalForm';
 @import 'modal';
-
-$base-color: #c6538c;
-
-body {
-  color: $base-color;
-}

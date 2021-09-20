@@ -1,0 +1,56 @@
+.table__main-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table__main-container {
+  width: 1200px;
+  .table__top-bar {
+    display: flex;
+    justify-content: space-between;
+    margin: 25px 0px 15px;
+  }
+  table {
+    border: 0.3px solid black;
+    width: 100%;
+    border-spacing: 0.5px;
+    .table__count {
+      margin-left: auto;
+      align-self: right;
+      height: 20px;
+    }
+    .table-tdflex {
+      display: flex;
+    }
+    th {
+      padding-left: 28px !important;
+      text-align: left;
+      position: relative;
+      height: 25px;
+    }
+    .table__sort-button {
+      position: absolute;
+      right: 10px;
+      bottom: 4px;
+      cursor: pointer;
+    }
+    th,
+    td {
+      padding: 5px 10px;
+      border: 0.3px solid black;
+    }
+  }
+}
+
+.table__productDescription-link {
+  background: white;
+  text-decoration: underline;
+  padding: 5px 10px;
+}
+
+.table__productDescription-link:hover {
+  color: rgb(42, 133, 207);
+  cursor: pointer;
+}

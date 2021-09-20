@@ -1,5 +1,8 @@
 import { Product } from '../interfaces/interfaces'
 import * as actionTypes from './actionTypes'
+import { initialProducts } from './mockData'
+import { createSelector } from 'reselect'
+import { RootState } from './store'
 
 interface InitialState {
   currentProduct: null | Product
@@ -8,32 +11,7 @@ interface InitialState {
 
 const initialState: InitialState = {
   currentProduct: null,
-  products: [
-    {
-      id: 1,
-      name: 'BMW',
-      count: 25,
-      price: 15252,
-    },
-    {
-      id: 2,
-      name: 'Porshe',
-      count: 5,
-      price: 67742,
-    },
-    {
-      id: 3,
-      name: 'Audi',
-      count: 15,
-      price: 32552,
-    },
-    {
-      id: 4,
-      name: 'Opel',
-      count: 435,
-      price: 500,
-    },
-  ],
+  products: initialProducts,
 }
 
 const productReducer = (state = initialState, action: any) => {
@@ -43,6 +21,13 @@ const productReducer = (state = initialState, action: any) => {
       return {
         ...state,
         currentProduct: state.products.filter((product) => product.id === payload),
+      }
+    }
+
+    case actionTypes.EDIT_PRODUCT: {
+      return {
+        ...state,
+        products: state.products.map((product) => (product.id === payload.id ? payload : product)),
       }
     }
 
@@ -58,9 +43,22 @@ const productReducer = (state = initialState, action: any) => {
         products: state.products.filter((product) => product.id !== payload),
       }
     }
+    case actionTypes.SEARCH_PRODUCT: {
+      if (payload === '') {
+        return {
+          ...state,
+          products: initialProducts,
+        }
+      }
+      const rexExp = new RegExp(payload, 'i')
+      return {
+        ...state,
+        products: state.products.filter(({ name }) => name.match(rexExp)),
+      }
+    }
     case actionTypes.SORT_PRODUCTS: {
       if (payload.isAscending === false) {
-        // Sorting didn't change the reference so the component didn't rerender
+        // Sorting doesn't change the reference, so the component doesn't rerender
         const newArr = state.products.sort((a: any, b: any) => a[payload.parameter] - b[payload.parameter])
         return {
           ...state,
@@ -78,5 +76,16 @@ const productReducer = (state = initialState, action: any) => {
       return state
   }
 }
+
+const prod = (state: RootState) => state.product.products
+const currProduct = (state: RootState) => state.product.currentProduct
+
+export const allProducts = createSelector([prod], (products) => {
+  return products
+})
+
+export const oneCurrentProduct = createSelector([currProduct], (currProduct) => {
+  return currProduct
+})
 
 export default productReducer

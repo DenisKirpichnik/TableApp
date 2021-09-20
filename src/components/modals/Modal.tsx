@@ -1,39 +1,19 @@
 import React, { FC } from 'react'
 import ReactDOM from 'react-dom'
+import { ModalProps } from '../../interfaces/interfaces'
 
-interface ModalProps {
-  isShowing: boolean
-  hide: () => void
-  yesAction: (id: number) => void
-  productName: number
-}
+import { ContentModal } from './ContentModal/ContentModal'
+import DeleteModal from './DeleteModal/DeleteModal'
 
-const Modal: FC<ModalProps> = ({ isShowing, hide, yesAction, productName }) => {
-  const executeYesActionCloseModal = () => {
-    yesAction(1)
-    hide()
-  }
-
+const Modal: FC<ModalProps> = ({ isShowing, hide, yesAction, productName, modalType }) => {
   return isShowing
     ? ReactDOM.createPortal(
         <>
-          <div className="modal-overlay" />
-          <div className="modal-wrapper" aria-modal aria-hidden tabIndex={-1} role="dialog">
-            <div className="modal">
-              <div className="modal-header"></div>
-              <p>Are you sure you want to delete product - {productName}</p>
-              <button
-                type="button"
-                className="modal-close-button"
-                data-dismiss="modal"
-                aria-label="Close"
-                onClick={hide}
-              >
-                No
-              </button>
-              <button onClick={executeYesActionCloseModal}>Yes</button>
-            </div>
-          </div>
+          {modalType === 'delete' ? (
+            <DeleteModal hide={hide} productName={productName} yesAction={yesAction} />
+          ) : (
+            <ContentModal hide={hide} />
+          )}
         </>,
         document.body
       )
