@@ -10,3 +10,10 @@
   max-width: 500px;
   padding: 2rem;
 }
+
+@mixin triangle-btn {
+  height: 20px;
+  background-color: white;
+  width: 0;
+  height: 0;
+}

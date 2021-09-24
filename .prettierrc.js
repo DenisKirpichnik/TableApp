@@ -1,9 +1,21 @@
 module.exports = {
-    semi: false,
-    trailingComma: 'es5',
-    jsxSingleQuote: false,
-    singleQuote: true,
-    printWidth: 120,
-    tabWidth: 2,
-    endOfLine: 'auto'
-  }
+  arrowParens: 'avoid',
+  bracketSpacing: true,
+  endOfLine: 'auto',
+  htmlWhitespaceSensitivity: 'css',
+  insertPragma: false,
+  jsxBracketSameLine: false,
+  jsxSingleQuote: false,
+  printWidth: 100,
+  proseWrap: 'preserve',
+  quoteProps: 'as-needed',
+  requirePragma: false,
+  semi: false,
+  singleQuote: true,
+  tabWidth: 2,
+  trailingComma: 'none',
+  useTabs: false,
+  vueIndentScriptAndStyle: false,
+  filepath: '/Users/andrew/Dev/<Removed for privacy>/guards/auth.guard.ts',
+  parser: 'typescript'
+}

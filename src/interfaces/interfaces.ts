@@ -10,7 +10,7 @@ type ModalType = 'delete' | 'content'
 export interface ModalProps {
   modalType?: ModalType
   isShowing?: boolean
-  hide: () => void
+  hide?: () => void
   yesAction?: (id: number) => void
   productName?: number
   ref?: any

@@ -1,10 +1,10 @@
 import React, { FC, ChangeEvent, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { searchProduct } from '../../state/actions'
+import { getProducts, searchProduct } from '../../state/products/actions'
 import History from '../History'
 
-export const SearchBar: FC = () => {
+const SearchBar: FC = () => {
   const [searchValue, setSearchValue] = useState('')
   const dispatch = useDispatch()
   const location = useLocation()
@@ -16,18 +16,21 @@ export const SearchBar: FC = () => {
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onChangeSearchHandler = (e: ChangeEvent) => {
-    const target = e.target as HTMLInputElement
-    setSearchValue(target.value)
-    History.push('?search=' + target.value)
-    if (target.value === '') {
-      dispatch(searchProduct(''))
-    }
-  }
+  const onChangeSearchHandler = React.useCallback(
+    (e: ChangeEvent) => {
+      const target = e.target as HTMLInputElement
+      setSearchValue(target.value)
+      History.push('?search=' + target.value)
+      if (target.value === '') {
+        dispatch(getProducts())
+      }
+    },
+    [dispatch]
+  )
 
-  const onSubmitSearhHandler = () => {
+  const onSubmitSearhHandler = React.useCallback(() => {
     dispatch(searchProduct(searchValue))
-  }
+  }, [searchValue, dispatch])
 
   return (
     <div className="table__searchBar-container">
@@ -38,3 +41,4 @@ export const SearchBar: FC = () => {
     </div>
   )
 }
+export default React.memo(SearchBar)
