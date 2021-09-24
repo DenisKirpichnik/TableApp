@@ -1,37 +1,50 @@
-import React, { useState } from 'react'
+import React, { useState, FC } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Modal from '../components/modals/Modal'
-import useModal from '../components/useModal'
+import { SearchBar } from '../components/searchBar/SearchBar'
+import useModal from '../utils/customHooks/useModal'
 import { Product } from '../interfaces/interfaces'
 import { deleteProduct, setCurrentProduct, sortProducts } from '../state/actions'
-import { RootState } from '../state/store'
+import { allProducts, oneCurrentProduct } from '../state/productReducer'
 
 type SortConfig = {
   priceAscDirection: boolean
   countAscDirection: boolean
 }
 
-export const Table = () => {
+export const Table: FC = () => {
   const [sortConfig, setSortConfig] = useState<SortConfig>({ priceAscDirection: false, countAscDirection: false })
-  const dispatch = useDispatch()
-  const products = useSelector((state: RootState) => state.product.products)
-  const currentProduct = useSelector((state: RootState) => state.product.currentProduct)
-  console.log('currentProduct', currentProduct)
   const { isShowing, toggle } = useModal()
+  const { isShowing: isContentModalShowin, toggle: setContentModalShowing } = useModal()
+  const dispatch = useDispatch()
+  const products = useSelector(allProducts)
+  const currentProduct = useSelector(oneCurrentProduct)
 
-  const handleDeleteProduct = () => {
-    if (currentProduct) {
-      console.log('testing', currentProduct.id)
-      dispatch(deleteProduct(currentProduct[0].id))
-      dispatch(setCurrentProduct(null))
-    }
-  }
+  console.log(products)
 
-  const openModalSetCurrentProduct = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const openDeleteModalSetCurrentProduct = (e: React.MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement
     const id = Number(target.getAttribute('data-id'))
     dispatch(setCurrentProduct(id))
     toggle()
+  }
+
+  const openContentModalForEditing = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const target = e.target as HTMLButtonElement
+    const id = Number(target.getAttribute('data-id'))
+    dispatch(setCurrentProduct(id))
+    setContentModalShowing()
+  }
+
+  const openContentModalForCreatingNew = () => {
+    setContentModalShowing()
+  }
+
+  const handleDeleteProduct = () => {
+    if (currentProduct) {
+      dispatch(deleteProduct(currentProduct[0].id))
+      dispatch(setCurrentProduct(null))
+    }
   }
 
   const handleSort = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -46,52 +59,72 @@ export const Table = () => {
     }
   }
 
-  console.log(products)
   return (
-    <div>
+    <div className="table__main-wrapper">
       {isShowing && (
         <Modal
+          modalType="delete"
           isShowing={isShowing}
           hide={toggle}
           yesAction={handleDeleteProduct}
           productName={currentProduct && currentProduct[0].name}
         />
       )}
-      <table>
-        <thead>
-          <tr>
-            <th>
-              Name{' '}
-              <button data-id={'count'} onClick={handleSort}>
-                X
-              </button>
-            </th>
-            <th>
-              Price{' '}
-              <button data-id={'price'} onClick={handleSort}>
-                Y
-              </button>
-            </th>
-            <th>actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product: Product) => (
-            <tr key={product.id}>
-              <td>
-                {product.name} {product.count}
-              </td>
-              <td>{product.price}</td>
-              <td>
-                <button data-id={product.id}>Edit</button>
-                <button data-id={product.id} onClick={openModalSetCurrentProduct}>
-                  Delete
+      {isContentModalShowin && (
+        <Modal modalType="content" isShowing={isContentModalShowin} hide={setContentModalShowing} />
+      )}
+      <div className="table__main-container">
+        <div className="table__top-bar">
+          <SearchBar />
+          <button onClick={openContentModalForCreatingNew}>Add New</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                Name{' '}
+                <button className="table__sort-button" data-id={'count'} onClick={handleSort}>
+                  X
                 </button>
-              </td>
+              </th>
+              <th>
+                Price{' '}
+                <button className="table__sort-button" data-id={'price'} onClick={handleSort}>
+                  Y
+                </button>
+              </th>
+              <th>actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {products.map((product: Product) => (
+              <tr key={product.id}>
+                <td className="table-tdflex">
+                  <button
+                    data-id={product.id}
+                    className="table__productDescription-link"
+                    onClick={openContentModalForEditing}
+                  >
+                    {product.name}
+                  </button>{' '}
+                  <div className="table__count">
+                    <span>{product.count}</span>
+                  </div>
+                </td>
+                <td>{product.price}</td>
+                <td>
+                  <button data-id={product.id} onClick={openContentModalForEditing}>
+                    Edit
+                  </button>
+                  <button data-id={product.id} onClick={openDeleteModalSetCurrentProduct}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
