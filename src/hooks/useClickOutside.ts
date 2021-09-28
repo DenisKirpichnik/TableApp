@@ -1,4 +1,6 @@
 import { RefObject, useEffect } from 'react'
+import { setCurrentProduct } from '../state/products/actions'
+import { useDispatch } from 'react-redux'
 
 type AnyEvent = MouseEvent | TouchEvent
 
@@ -6,6 +8,7 @@ function useClickOutside<T extends HTMLElement = HTMLElement>(
   ref: RefObject<T>,
   handler: (event: AnyEvent) => void
 ): void {
+  const dispatch = useDispatch()
   useEffect(() => {
     const listener = (event: AnyEvent) => {
       const el = ref?.current
@@ -13,6 +16,7 @@ function useClickOutside<T extends HTMLElement = HTMLElement>(
         return
       }
       handler(event)
+      dispatch(setCurrentProduct(null))
     }
     document.addEventListener(`mousedown`, listener)
     document.addEventListener(`touchstart`, listener)

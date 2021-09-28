@@ -1,0 +1,9 @@
+export const actions = {
+  GET_PRODUCTS: 'GET_PRODUCTS' as const,
+  ADD_NEW_PRODUCT: 'ADD_NEW_PRODUCT' as const,
+  DELETE_PRODUCT: 'DELETE_PRODUCT' as const,
+  SORT_PRODUCTS: 'SORT_PRODUCTS' as const,
+  SET_CURRENT_PRODUCT: 'SET_CURRENT_PRODUCT' as const,
+  SEARCH_PRODUCT: 'SEARCH_PRODUCT' as const,
+  EDIT_PRODUCT: 'EDIT_PRODUCT' as const
+}

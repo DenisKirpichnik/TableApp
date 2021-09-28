@@ -1,8 +1,22 @@
-import { combineReducers } from 'redux'
-import productReducer from './productReducer'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import thunk from 'redux-thunk'
+import { productReducers } from './products/productReducers'
+import { state as productState } from './products/state'
 
-export const rootReducer = combineReducers({
-  product: productReducer,
-})
+const createReducer = (initialState = {}, reducers: any) => {
+  console.log('initialState', initialState)
+  return (state = initialState, action: any) => {
+    const reducerFn = reducers[action.type]
+    return reducerFn ? reducerFn(state, action) : state
+  }
+}
 
-export type RootState = ReturnType<typeof rootReducer>
+export const configureStore = () => {
+  return createStore(
+    combineReducers({
+      product: createReducer(productState, productReducers)
+    }),
+    composeWithDevTools(applyMiddleware(thunk))
+  )
+}

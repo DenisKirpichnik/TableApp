@@ -24,18 +24,16 @@
     .table-tdflex {
       display: flex;
     }
+   .table-priceCell {
+     text-align: right;
+   }
     th {
       padding-left: 28px !important;
       text-align: left;
       position: relative;
       height: 25px;
     }
-    .table__sort-button {
-      position: absolute;
-      right: 10px;
-      bottom: 4px;
-      cursor: pointer;
-    }
+   
     th,
     td {
       padding: 5px 10px;
@@ -54,3 +52,27 @@
   color: rgb(42, 133, 207);
   cursor: pointer;
 }
+
+
+.table__sort-button {
+  position: absolute;
+  right: 10px;
+  bottom: 4px;
+  width: 10px;
+  cursor: pointer;
+  background-color: white;
+  .triangle-up {
+    @include triangle-btn;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 15px solid #555;
+  }
+  .triangle-down {
+    @include triangle-btn;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 15px solid #555;
+  }
+}
+
+

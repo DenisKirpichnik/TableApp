@@ -45,18 +45,15 @@
   display: flex;
 }
 
+.table__main-container table .table-priceCell {
+  text-align: right;
+}
+
 .table__main-container table th {
   padding-left: 28px !important;
   text-align: left;
   position: relative;
   height: 25px;
-}
-
-.table__main-container table .table__sort-button {
-  position: absolute;
-  right: 10px;
-  bottom: 4px;
-  cursor: pointer;
 }
 
 .table__main-container table th,
@@ -74,6 +71,35 @@
 .table__productDescription-link:hover {
   color: #2a85cf;
   cursor: pointer;
+}
+
+.table__sort-button {
+  position: absolute;
+  right: 10px;
+  bottom: 4px;
+  width: 10px;
+  cursor: pointer;
+  background-color: white;
+}
+
+.table__sort-button .triangle-up {
+  height: 20px;
+  background-color: white;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 15px solid #555;
+}
+
+.table__sort-button .triangle-down {
+  height: 20px;
+  background-color: white;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 15px solid #555;
 }
 
 .contentModal__wrapper {
