@@ -76,3 +76,13 @@
 }
 
 
+
+.table__delete-button {
+ background: rgb(235, 65, 65);
+ @include deleteBtns;
+}
+
+.table__edit-button {
+ background: rgb(20, 197, 20);
+ @include deleteBtns;
+}

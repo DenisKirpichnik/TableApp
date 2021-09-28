@@ -2,14 +2,26 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  .contentModal__input-container {
+    margin-top: 10px;
+  }
   .contentModal__form {
     display: flex;
     flex-direction: column;
-    height: 400px;
+    height: 350px;
     .contentModal__country-selector {
       display: flex;
       flex-direction: column;
       border: 1px solid black;
+      margin-left: 15px;
+      padding:10px;
+    }
+    .contentModal__city-selector {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid black;
+      margin-left: 15px;
+      padding: 10px;
     }
   }
   .contentModal__location-container {
@@ -27,8 +39,24 @@
     width: 200px;
     border: 1px solid red !important;
   }
-  .contentModal__errorMessage {
-    margin-left: 10px;
-    color: red;
-  }
+  
+}
+
+.contentModal__errorMessage {
+  margin-left: 10px;
+  color: red;
+}
+
+.contentModal__delivery-config {
+  height: 30px;
+}
+
+.formikForm__submit-button {
+ margin: auto auto 0px;
+ width: 60%;  
+}
+
+.formikForm__combobox-header {
+  margin-top: 10px;
+  margin-bottom: 0px;
 }

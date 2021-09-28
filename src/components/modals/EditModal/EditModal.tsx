@@ -1,23 +1,17 @@
-import React, { FC, SyntheticEvent, useRef, useState } from 'react'
+import React, { FC, useRef } from 'react'
 import classNames from 'classnames'
-// import { ModalProps, Product } from '../../../interfaces/interfaces'
+import { ModalProps, Product } from '../../../interfaces/interfaces'
 import useClickOutside from '../../../hooks/useClickOutside'
 import { Formik, ErrorMessage } from 'formik'
-
 import { useDispatch, useSelector } from 'react-redux'
 import { addNewProduct, editProduct, setCurrentProduct } from '../../../state/products/actions'
 import { allProducts, oneCurrentProduct } from '../../../state/products/selectors'
-import { formSchema } from './utils'
-import { Product } from '../../../interfaces/interfaces'
 import FormikForm from './FormikForm'
+import { formSchema } from './utils'
 
-const EditModal: FC<any> = ({ closeModal }) => {
-  const [locationConfig, setLocationConfig] = useState({ mode: '' })
-
+const EditModal: FC<ModalProps> = ({ closeModal }) => {
   const ref = useRef<HTMLDivElement>(null)
-
   const dispatch = useDispatch()
-
   const products = useSelector(allProducts)
   const currentProduct = useSelector(oneCurrentProduct)
 
@@ -26,24 +20,30 @@ const EditModal: FC<any> = ({ closeModal }) => {
     dispatch(setCurrentProduct(null))
   }, [dispatch, closeModal])
 
-  const handleLocationChange = (e: SyntheticEvent) => {
-    const element = e.target as HTMLInputElement
-    setLocationConfig({ mode: element.value })
-  }
   useClickOutside(ref, handleCloseModal)
+
+  const setInitialValues = React.useCallback(() => {
+    return currentProduct
+      ? {
+          ...currentProduct[0],
+          email: currentProduct[0]?.email ? currentProduct[0].email : '',
+          country: currentProduct[0]?.country ? currentProduct[0].country : '',
+          city: currentProduct[0]?.city ? currentProduct[0].city : ''
+        }
+      : { name: '', email: '', count: 0, price: 0, country: '', city: '' }
+  }, [currentProduct])
+
   return (
     <>
       <div className="modal-overlay" />
       <div className="modal-wrapper">
         <div className="modal" ref={ref}>
           <div className="contentModal__wrapper">
-            <button onClick={closeModal}>X</button>
+            <button onClick={closeModal} className="contentModal__close-modal">
+              X
+            </button>
             <Formik
-              initialValues={
-                currentProduct
-                  ? { ...currentProduct[0], email: '' }
-                  : { name: '', email: '', count: 0, price: 0 }
-              }
+              initialValues={setInitialValues()}
               validationSchema={formSchema}
               onSubmit={(values, { setSubmitting }) => {
                 console.log('submitting', values)
@@ -61,13 +61,14 @@ const EditModal: FC<any> = ({ closeModal }) => {
                 closeModal()
               }}
             >
-              {({ isSubmitting, errors, values, touched }) => {
+              {({ isSubmitting, errors, values, touched, setFieldValue, setErrors }) => {
                 const isBorderRed = (inputName: string) => {
                   return classNames({
                     'contentModal__form-inputRed': touched[inputName] && errors[inputName],
                     'contentModal__form-input': !errors[inputName]
                   })
                 }
+
                 const shouldShowError = (inputName: string) => {
                   if (touched[inputName] && errors[inputName]) {
                     return (
@@ -84,11 +85,12 @@ const EditModal: FC<any> = ({ closeModal }) => {
                   <FormikForm
                     shouldShowError={shouldShowError}
                     isBorderRed={isBorderRed}
-                    handleLocationChange={handleLocationChange}
-                    locationConfig={locationConfig}
                     currentProduct={currentProduct}
                     values={values}
                     isSubmitting={isSubmitting}
+                    setFieldValue={setFieldValue}
+                    errors={errors}
+                    setErrors={setErrors}
                   />
                 )
               }}

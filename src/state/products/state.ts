@@ -3,7 +3,7 @@ import { Product } from '../../interfaces/interfaces'
 
 export interface InitialState {
   currentProduct: null | Product
-  products: Product[]
+  products: null | Product[]
 }
 
 export const state: InitialState = {

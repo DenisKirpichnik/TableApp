@@ -13,6 +13,7 @@ import {
 } from '../state/products/actions'
 import { allProducts, oneCurrentProduct } from '../state/products/selectors'
 import { useModal } from '../hooks/useModal'
+import History from '../components/History'
 
 type SortConfig = {
   priceAscDirection: boolean
@@ -27,7 +28,7 @@ const Table: FC = () => {
   const dispatch = useDispatch()
   const products = useSelector(allProducts)
   const currentProduct = useSelector(oneCurrentProduct)
-  console.log('currentProduct', currentProduct)
+  //console.log('currentProduct', currentProduct)
 
   useEffect(() => {
     dispatch(getProducts())
@@ -111,8 +112,10 @@ const Table: FC = () => {
       <EditProductDialog />
       <div className="table__main-container">
         <div className="table__top-bar">
-          <SearchBar />
-          <button onClick={openEditModal}>Add New</button>
+          <SearchBar history={History} />
+          <button onClick={openEditModal} className="primary-button">
+            Add New
+          </button>
         </div>
         <table>
           <TableHead handleSort={handleSort} sortConfig={sortConfig} />

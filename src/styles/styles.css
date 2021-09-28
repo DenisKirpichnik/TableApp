@@ -1,3 +1,13 @@
+.primary-button {
+  background: white;
+  border: black 1px solid;
+  cursor: pointer;
+}
+
+.primary-button:hover {
+  background: #f3f0f0;
+}
+
 .table__main-wrapper {
   width: 100%;
   display: -webkit-box;
@@ -102,6 +112,20 @@
   border-top: 15px solid #555;
 }
 
+.table__delete-button {
+  background: #eb4141;
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+}
+
+.table__edit-button {
+  background: #14c514;
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+}
+
 .contentModal__wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -113,6 +137,10 @@
   height: 100%;
 }
 
+.contentModal__wrapper .contentModal__input-container {
+  margin-top: 10px;
+}
+
 .contentModal__wrapper .contentModal__form {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -121,7 +149,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  height: 400px;
+  height: 350px;
 }
 
 .contentModal__wrapper .contentModal__form .contentModal__country-selector {
@@ -133,6 +161,21 @@
       -ms-flex-direction: column;
           flex-direction: column;
   border: 1px solid black;
+  margin-left: 15px;
+  padding: 10px;
+}
+
+.contentModal__wrapper .contentModal__form .contentModal__city-selector {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border: 1px solid black;
+  margin-left: 15px;
+  padding: 10px;
 }
 
 .contentModal__wrapper .contentModal__location-container {
@@ -157,9 +200,23 @@
   border: 1px solid red !important;
 }
 
-.contentModal__inputError-container .contentModal__errorMessage {
+.contentModal__errorMessage {
   margin-left: 10px;
   color: red;
+}
+
+.contentModal__delivery-config {
+  height: 30px;
+}
+
+.formikForm__submit-button {
+  margin: auto auto 0px;
+  width: 60%;
+}
+
+.formikForm__combobox-header {
+  margin-top: 10px;
+  margin-bottom: 0px;
 }
 
 .modal-overlay {
@@ -194,6 +251,47 @@
   border-radius: 3px;
   max-width: 500px;
   padding: 2rem;
+  min-height: 350px;
+}
+
+.deleteModal {
+  min-height: 500px;
+  z-index: 100;
+  background: white;
+  position: relative;
+  margin: 1.75rem auto;
+  border-radius: 3px;
+  max-width: 500px;
+  padding: 2rem;
+  min-height: 80px;
+  max-width: 400px;
+}
+
+.deleteModal .modal-buttons-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.deleteModal .confirm-button {
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+  background: #2ff52f;
+}
+
+.deleteModal .cancel-button {
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+  background: #f8f5f5;
+  color: black;
 }
 
 .modal-header {
@@ -227,5 +325,12 @@ button {
 .button-default {
   background: #247ba0;
   color: #fff;
+}
+
+.contentModal__close-modal {
+  width: 40px;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  cursor: pointer;
 }
 /*# sourceMappingURL=styles.css.map */

@@ -12,6 +12,8 @@ const createReducer = (initialState = {}, reducers: any) => {
   }
 }
 
+const rootReducer = createReducer(productState, productReducers)
+
 export const configureStore = () => {
   return createStore(
     combineReducers({
@@ -20,3 +22,5 @@ export const configureStore = () => {
     composeWithDevTools(applyMiddleware(thunk))
   )
 }
+
+export type RootState = ReturnType<typeof rootReducer>

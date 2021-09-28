@@ -39,7 +39,7 @@ const TableHead: FC<TableHeadProps> = ({ handleSort, sortConfig }) => {
             <div className={handleArrowDirectionChange(priceAscDirection)}></div>
           </button>
         </th>
-        <th>actions</th>
+        <th>Actions</th>
       </tr>
     </thead>
   )

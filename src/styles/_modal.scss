@@ -23,6 +23,27 @@
 
 .modal {
   @include modal-base;
+  min-height: 350px
+}
+
+.deleteModal {
+  @include modal-base;
+  min-height: 80px;
+  max-width: 400px;
+  .modal-buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+  }
+  .confirm-button {
+    @include deleteBtns;
+    background: rgb(47, 245, 47);
+  }
+  .cancel-button {
+    @include deleteBtns;
+    background: rgb(248, 245, 245);
+    color: black;
+  }
 }
 
 .modal-header {
@@ -52,4 +73,10 @@ button {
 .button-default {
   background: #247ba0;
   color: #fff;
+}
+
+.contentModal__close-modal {
+  width: 40px;
+  align-self: flex-end;
+  cursor: pointer;
 }

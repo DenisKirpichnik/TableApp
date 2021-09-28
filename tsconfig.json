@@ -15,7 +15,18 @@
       "strict": true /* Enable all strict type-checking options. */,
       "skipLibCheck": true /* Skip type checking of declaration files. */,
       "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
-      "resolveJsonModule": true
+      "resolveJsonModule": true,
+      "baseUrl": "src",
+      "paths": {
+      "test-utils": ["./utils/test-utils"]
+    }
     },
-    "include": ["src/**/*"]
+    "include": ["src/**/*"],
+    "types": [
+      "react",
+      "@types/testing-library__react",
+      "jest"
+    ]
   }
+
+  

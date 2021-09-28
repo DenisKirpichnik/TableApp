@@ -2,6 +2,7 @@ import { Reducer } from 'redux'
 import { actions } from './actionTypes'
 import { state as initialState } from './state'
 import { Product } from '../../interfaces/interfaces'
+import { RootState } from '../store'
 
 export interface Action<T, P> {
   type: T
@@ -9,14 +10,14 @@ export interface Action<T, P> {
 }
 
 interface Reducers {
-  [actions.GET_PRODUCTS]: Reducer<any, Action<string, { products: Product[] }>>
-  [actions.SET_CURRENT_PRODUCT]: Reducer<any, Action<string, number>>
-  [actions.EDIT_PRODUCT]: Reducer<any, Action<string, Product>>
-  [actions.ADD_NEW_PRODUCT]: Reducer<any, Action<string, Product>>
-  [actions.DELETE_PRODUCT]: Reducer<any, Action<string, number>>
-  [actions.SEARCH_PRODUCT]: Reducer<any, Action<string, string>>
+  [actions.GET_PRODUCTS]: Reducer<RootState, Action<string, { products: Product[] }>>
+  [actions.SET_CURRENT_PRODUCT]: Reducer<RootState, Action<string, number>>
+  [actions.EDIT_PRODUCT]: Reducer<RootState, Action<string, Product>>
+  [actions.ADD_NEW_PRODUCT]: Reducer<RootState, Action<string, Product>>
+  [actions.DELETE_PRODUCT]: Reducer<RootState, Action<string, number>>
+  [actions.SEARCH_PRODUCT]: Reducer<RootState, Action<string, string>>
   [actions.SORT_PRODUCTS]: Reducer<
-    any,
+    RootState,
     Action<string, { isAscending: boolean; parameter: 'count' | 'string' }>
   >
 }

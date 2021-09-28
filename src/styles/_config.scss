@@ -17,3 +17,20 @@
   width: 0;
   height: 0;
 }
+
+@mixin deleteBtns {
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+}
+
+
+.primary-button {
+   background: white;
+   border: black 1px solid;
+   cursor: pointer;
+}
+
+.primary-button:hover {
+  background: rgb(243, 240, 240);
+}

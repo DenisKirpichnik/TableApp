@@ -33,8 +33,12 @@ const TableRow: FC<TableRowProps> = ({
       </td>
       <td className="table-priceCell">{formatNumber(product.price)}</td>
       <td>
-        <button onClick={handleEditProduct}>Edit</button>
-        <button onClick={handleDeleteProduct}>Delete</button>
+        <button onClick={handleEditProduct} className="table__delete-button">
+          Edit
+        </button>
+        <button onClick={handleDeleteProduct} className="table__edit-button">
+          Delete
+        </button>
       </td>
     </tr>
   )

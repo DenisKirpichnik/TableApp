@@ -1,31 +1,35 @@
 import React, { FC, SyntheticEvent, useState } from 'react'
-import { checkboxButtons, Input, inputs, radioButtons } from './utils'
-import { Form, Field } from 'formik'
-import { Product } from '../../../interfaces/interfaces'
+import { countriesCities, Input, inputs } from './utils'
+import { Form, Field, ErrorMessage } from 'formik'
+import { Product, FormikValues } from '../../../interfaces/interfaces'
 import { formatNumber } from '../../../helpers/formatNumber'
 
 interface FormikFormProps {
   shouldShowError: (inputName: string) => void
   isBorderRed: (inputName: string) => void
-  handleLocationChange: (e: SyntheticEvent) => void
-  locationConfig: { mode: string }
   currentProduct: Product
   isSubmitting: boolean
-  values: any
+  values: FormikValues
+  setFieldValue: (fieldName: string, data: any) => void
+  errors: any
+  setErrors: (data: any) => void
 }
 const FormikForm: FC<FormikFormProps> = ({
   isBorderRed,
   shouldShowError,
-  handleLocationChange,
-  locationConfig,
   currentProduct,
   isSubmitting,
-  values
+  values,
+  setFieldValue,
+  errors,
+  setErrors
 }) => {
+  const [locationConfig, setLocationConfig] = useState({ mode: '' })
   const [isPriceInputFocused, setIsPriceInputFocused] = useState(false)
   const [priceValue, setPriceValue] = useState<number | string>('')
   const [touchedPrice, setTouchedPrice] = useState(false)
-
+  console.log('errors', errors)
+  console.log('locationConfig', locationConfig)
   const determineTypeOfInput = (inputName: string, inputType: string) => {
     return inputName === 'price' ? (isPriceInputFocused ? 'number' : 'text') : inputType
   }
@@ -53,22 +57,63 @@ const FormikForm: FC<FormikFormProps> = ({
   const decideValue = !isPriceInputFocused ? priceValue : values.price
   const formattedPrice = formatNumber(values.price)
 
-  const priceProps = {
-    onBlur: setPriceFocusFalseOnBlur,
-    onFocus: setPriceFocusTrueOnFocus,
-    value: touchedPrice ? decideValue : formattedPrice
-  }
-
-  const countProps = {
-    onPaste: onPasteOnlyNumbers
-  }
-
-  const addAdditionalProps = (inputName: string) => {
-    const names = ['price', 'count']
-    if (names.includes(inputName)) {
-      return inputName === 'price' ? priceProps : countProps
+  const priceProps = React.useMemo(() => {
+    return {
+      onBlur: setPriceFocusFalseOnBlur,
+      onFocus: setPriceFocusTrueOnFocus,
+      value: touchedPrice ? decideValue : formattedPrice
     }
-    return
+  }, [
+    decideValue,
+    formattedPrice,
+    setPriceFocusFalseOnBlur,
+    setPriceFocusTrueOnFocus,
+    touchedPrice
+  ])
+
+  const countProps = React.useMemo(() => {
+    return { onPaste: onPasteOnlyNumbers }
+  }, [onPasteOnlyNumbers])
+
+  const addAdditionalProps = React.useCallback(
+    (inputName: string) => {
+      const names = ['price', 'count']
+      if (names.includes(inputName)) {
+        return inputName === 'price' ? priceProps : countProps
+      }
+      return
+    },
+    [countProps, priceProps]
+  )
+
+  const handleCityChange = React.useCallback(() => {
+    if (values.country !== '') {
+      values.city.length !== countriesCities[values.country].length
+        ? setFieldValue('city', countriesCities[values.country])
+        : setFieldValue('city', '')
+    }
+  }, [setFieldValue, values.city.length, values.country])
+
+  const handleLocationChange = React.useCallback(
+    (e: SyntheticEvent) => {
+      const element = e.target as HTMLInputElement
+      if (element.value === '') {
+        setFieldValue('country', '')
+        setFieldValue('city', '')
+        setErrors({ ...errors, city: null })
+        console.log('values', values)
+      }
+      setLocationConfig({ mode: element.value })
+    },
+    [setFieldValue, setErrors, values, errors]
+  )
+
+  const shouldShowCityError = (inputName: string) => {
+    if (errors[inputName]) {
+      return (
+        <ErrorMessage name={inputName} component="div" className="contentModal__errorMessage" />
+      )
+    }
   }
 
   return (
@@ -89,9 +134,14 @@ const FormikForm: FC<FormikFormProps> = ({
           </div>
         )
       })}
-      <span>Delivery:</span>
+      <p className="formikForm__combobox-header">Delivery:</p>
       <div className="contentModal__location-container">
-        <Field as="select" name="mode" onChange={handleLocationChange}>
+        <Field
+          as="select"
+          name="mode"
+          onChange={handleLocationChange}
+          className="contentModal__delivery-config"
+        >
           <option value=""></option>
           <option value="country">Country</option>
           <option value="city">City</option>
@@ -103,26 +153,47 @@ const FormikForm: FC<FormikFormProps> = ({
             aria-labelledby="my-radio-group"
             className="contentModal__country-selector"
           >
-            {radioButtons.map((radioButton: string, i) => (
-              <label key={radioButton} htmlFor={`fieldValue${i}`}>
-                <Field type="radio" name="country" value={radioButton} id={`fieldValue${i}`} />
-                {radioButton}
+            {Object.keys(countriesCities).map((country, i) => (
+              <label key={country} htmlFor={`fieldValue${i}`}>
+                <Field type="radio" name="country" value={country} id={`fieldValue${i}`} />
+                {country}
               </label>
             ))}
           </div>
         )}
-        {locationConfig.mode === 'city' && values.country !== '' && (
-          <div role="group" aria-labelledby="checkbox-group">
-            {checkboxButtons.map((city: string, i) => (
-              <label key={city} htmlFor={`cityfield${i}`}>
-                <Field type="radio" name="country" value={city} id={`cityfield${i}`} />
-                {city}
-              </label>
-            ))}
+        {locationConfig.mode === 'city' && values.country && (
+          <div
+            role="group"
+            aria-labelledby="checkbox-group"
+            className="contentModal__city-selector"
+          >
+            <label htmlFor={`selectAll`}>
+              <Field
+                type="checkbox"
+                name="city"
+                onChange={handleCityChange}
+                checked={
+                  countriesCities[values.country] &&
+                  values.city &&
+                  values.city.length === countriesCities[values.country].length
+                }
+                value={countriesCities[values.country]}
+                id="selectAll"
+              />
+              Select All
+            </label>
+            {values.country &&
+              countriesCities[values.country].map((city, i) => (
+                <label key={city} htmlFor={`cityfield${i}`}>
+                  <Field type="checkbox" name="city" value={city} id={`cityfield${i}`} />
+                  {city}
+                </label>
+              ))}
           </div>
         )}
+        {shouldShowCityError('city')}
       </div>
-      <button type="submit" disabled={isSubmitting}>
+      <button type="submit" disabled={isSubmitting} className="formikForm__submit-button">
         {currentProduct ? 'Edit' : 'Add'}{' '}
       </button>
     </Form>
